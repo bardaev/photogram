@@ -1,10 +1,12 @@
 package com.my.photogram.repository;
 
 import com.my.photogram.entity.User;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IUserRepository {
+import java.util.Optional;
 
-    User findUserByUsername(String name);
+public interface IUserRepository extends CrudRepository<User, Long> {
 
-    User createUser(User user);
+    Optional<User> findUserByUsername(String name);
+
 }
