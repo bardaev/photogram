@@ -21,8 +21,8 @@ public class UserController {
     private IUserService userService;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String general(Authentication authentication) {
-        return "general";
+    public String general() {
+        return "sections/general";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
