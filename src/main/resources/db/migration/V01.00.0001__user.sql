@@ -1,9 +1,10 @@
 CREATE SEQUENCE hibernate_sequence;
 
 CREATE TABLE users (
-    id INTEGER NOT NULL,
-    username VARCHAR(50) NOT NULL PRIMARY KEY,
+    id INTEGER NOT NULL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
     password VARCHAR(500) NOT NULL,
+    description TEXT,
     created TIMESTAMP,
     enabled BOOLEAN NOT NULL DEFAULT TRUE
 );
