@@ -3,5 +3,5 @@ CREATE TABLE comment (
     created TIMESTAMP,
     text TEXT,
     id_user INTEGER NOT NULL,
-    FOREIGN KEY (id_user) REFERENCES pg.users (id)
+    FOREIGN KEY (id_user) REFERENCES pg.users (id_user)
 );
