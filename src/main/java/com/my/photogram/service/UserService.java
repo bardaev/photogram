@@ -27,6 +27,12 @@ public class UserService implements IUserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public User findUser(String username) {
+        Optional<User> user = userRepository.findUserByUsername(username);
+        return user.orElse(null);
+    }
+
     private boolean usernameExist(String username) {
         Optional<User> user = userRepository.findUserByUsername(username);
         return user.isPresent();

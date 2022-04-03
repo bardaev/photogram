@@ -1,5 +1,7 @@
 package com.my.photogram.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,6 +13,10 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_photo")
     private Long id;
+
+    @Lob
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] photo;
 
     private String description;
 
@@ -26,6 +32,14 @@ public class Photo {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     public String getDescription() {

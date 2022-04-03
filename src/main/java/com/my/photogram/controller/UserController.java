@@ -4,7 +4,6 @@ import com.my.photogram.entity.User;
 import com.my.photogram.service.IUserService;
 import com.my.photogram.validation.UsernameExistException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
