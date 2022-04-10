@@ -59,7 +59,7 @@
                     </form>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${point eq 5 ? 'active' : null}" th:href="@{/}">
+                            <a class="nav-link" th:classappend="${point eq 5 ? 'active' : null}" th:href="@{/profile(username=${#authentication.name})}">
                                 <img th:src="@{user.png}" class="rounded-circle" alt="Avatar" width="24" height="24">
                                 <div th:text="${#authentication.name}" style="display: inline"></div>
                             </a>

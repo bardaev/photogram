@@ -7,4 +7,6 @@ public interface IUserService {
 
     User registerNewUser(User user) throws UsernameExistException;
     User findUser(String username);
+    int countSubscribers(User user);
+    int countSubscriptions(User user);
 }
