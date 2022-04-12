@@ -5,13 +5,11 @@ import com.my.photogram.entity.User;
 import com.my.photogram.service.IPhotoService;
 import com.my.photogram.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -27,6 +25,14 @@ public class PhotoController {
 
     @Autowired
     private IUserService userService;
+
+    @RequestMapping(
+            value = "/photo/{id}",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public @ResponseBody byte[] getPhoto(@PathVariable("id") Long id) {
+        return photoService.getPhoto(id).getPhoto();
+    }
 
     @RequestMapping(path = "/upload", method = RequestMethod.GET)
     public ModelAndView uploadForm() {

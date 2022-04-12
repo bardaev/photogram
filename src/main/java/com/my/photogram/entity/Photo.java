@@ -1,8 +1,11 @@
 package com.my.photogram.entity;
 
 import org.hibernate.annotations.Type;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 
 import javax.persistence.*;
+import java.io.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,6 +39,14 @@ public class Photo {
 
     public byte[] getPhoto() {
         return photo;
+    }
+
+    public File getResourcePhoto() throws IOException {
+        File file = new File("img.jpg");
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(getPhoto());
+        fileOutputStream.close();
+        return file;
     }
 
     public void setPhoto(byte[] photo) {

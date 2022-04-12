@@ -1,8 +1,16 @@
 package com.my.photogram.repository;
 
 import com.my.photogram.entity.Photo;
-import org.springframework.data.repository.CrudRepository;
+import com.my.photogram.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface IPhotoRepository extends CrudRepository<Photo, Long> {
+import java.util.Optional;
+
+public interface IPhotoRepository extends PagingAndSortingRepository<Photo, Long> {
+
+    Optional<Photo> getPhotoById(Long id);
+    Page<Photo> findByUser(User user, Pageable pageable);
 
 }

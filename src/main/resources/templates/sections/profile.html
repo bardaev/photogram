@@ -52,5 +52,38 @@
         </div>
         <div class="col"></div>
     </div>
+    <div class="row my-5 mx-auto" style="width: 879px">
+        <th:block th:each="photo : ${photos}">
+            <div class="col-4 mx-auto" style="margin-bottom: 30px">
+                <div class="card border-dark" style="width: 263px; height: 263px">
+                    <a th:href="@{/}" style="margin: auto 0">
+                        <img class="card-img" th:src="@{/photo/{id}(id=${photo.getId()})}">
+                    </a>
+                </div>
+            </div>
+        </th:block>
+    </div>
+    <div class="row my-5 mx-0">
+        <th:block th:if="${countPages.size() ne 0}">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${page eq 0 ? 'disabled' : null}">
+                        <a class="page-link" th:href="@{/profile(username=${#authentication.name},page=${(page+0)-1})}">Previous</a>
+                    </li>
+                    <th:block th:each="pg, count : ${countPages}">
+                        <li class="page-item"
+                            th:classappend="${page eq count.current ? 'active' : null}">
+                            <a class="page-link"
+                               th:href="@{/profile(username=${#authentication.name},page=${pg})}"
+                               th:text="${count.count}"></a>
+                        </li>
+                    </th:block>
+                    <li class="page-item" th:classappend="${page eq countPages.size() - 1 ? 'disabled' : null}">
+                        <a class="page-link" th:href="@{/profile(username=${#authentication.name},page=${page+1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </th:block>
+    </div>
 </body>
 </html>
