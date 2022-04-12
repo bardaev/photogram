@@ -31,7 +31,7 @@
                                     <h3 th:text="${user.getUsername()}">null</h3>
                                 </div>
                                 <div class="col">
-                                    <a href="#" type="button" class="btn btn-dark">Edit profile</a>
+                                    <a th:if="${#authentication.getName() eq username}" href="#" type="button" class="btn btn-dark">Edit profile</a>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -68,18 +68,18 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${page eq 0 ? 'disabled' : null}">
-                        <a class="page-link" th:href="@{/profile(username=${#authentication.name},page=${(page+0)-1})}">Previous</a>
+                        <a class="page-link" th:href="@{/profile(username=${user.getUsername()},page=${(page+0)-1})}">Previous</a>
                     </li>
                     <th:block th:each="pg, count : ${countPages}">
                         <li class="page-item"
                             th:classappend="${page eq count.current ? 'active' : null}">
                             <a class="page-link"
-                               th:href="@{/profile(username=${#authentication.name},page=${pg})}"
+                               th:href="@{/profile(username=${user.getUsername()},page=${pg})}"
                                th:text="${count.count}"></a>
                         </li>
                     </th:block>
                     <li class="page-item" th:classappend="${page eq countPages.size() - 1 ? 'disabled' : null}">
-                        <a class="page-link" th:href="@{/profile(username=${#authentication.name},page=${page+1})}">Next</a>
+                        <a class="page-link" th:href="@{/profile(username=${user.getUsername()},page=${page+1})}">Next</a>
                     </li>
                 </ul>
             </nav>
