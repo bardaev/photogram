@@ -36,6 +36,7 @@ public class ProfileController {
         ModelAndView modelAndView = new ModelAndView("sections/profile", "user", user);
         int subscribers = userService.countSubscribers(user);
         int subscriptions = userService.countSubscriptions(user);
+        modelAndView.addObject("countPhotos", photosPage.getTotalElements());
         modelAndView.addObject("countSubscribers", subscribers);
         modelAndView.addObject("countSubscriptions", subscriptions);
         modelAndView.addObject("photos", photos);
