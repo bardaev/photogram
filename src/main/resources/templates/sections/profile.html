@@ -32,7 +32,12 @@
                                 </div>
                                 <div class="col">
                                     <a th:if="${#authentication.getName() eq username}" type="button" class="btn btn-dark">Edit profile</a>
-                                    <a th:if="${#authentication.getName() ne username}" type="button" class="btn btn-dark">Subscribe</a>
+                                    <th:block th:if="${#authentication.getName() ne username}">
+                                        <div th:switch="${isSubscriber}">
+                                            <a th:case="${false}" th:href="@{/profile/subscribe(username=${user.getUsername()},page=${page})}" type="button" class="btn btn-dark">Subscribe</a>
+                                            <a th:case="${true}" th:href="@{/profile/unsubscribe(username=${user.getUsername()},page=${page})}" type="button" class="btn btn-dark">Unsubscribe</a>
+                                        </div>
+                                    </th:block>
                                 </div>
                                 <div class="col"></div>
                             </div>
@@ -77,7 +82,7 @@
                     </li>
                     <th:block th:each="pg, count : ${countPages}">
                         <li class="page-item"
-                            th:classappend="${page eq count.current ? 'active dark' : null}">
+                            th:classappend="${page eq count.current ? 'active' : null}">
                             <a class="page-link"
                                th:href="@{/profile(username=${user.getUsername()},page=${pg})}"
                                th:text="${count.count}"></a>

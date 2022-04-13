@@ -5,19 +5,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
+@IdClass(SubscriberId.class)
 @Table(name = "subscribers")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subscribers {
+public class Subscribers implements Serializable {
 
-    @EmbeddedId
-    private SubscriberId subscriberId;
+    @Id
+    @Column(name = "id_subscriber")
+    private Long idSubscriber;
+    @Id
+    @Column(name = "id_author")
+    private Long idAuthor;
 
 }
