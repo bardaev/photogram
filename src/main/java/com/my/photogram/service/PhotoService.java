@@ -28,7 +28,7 @@ public class PhotoService implements IPhotoService {
 
     @Override
     public Page<Photo> getPhotos(User user, int page) {
-        Pageable pageable = PageRequest.of(page, 9, Sort.by("id").ascending());
+        Pageable pageable = PageRequest.of(page, 9, Sort.by("id").descending());
         return photoRepository.findByUser(user, pageable);
     }
 }

@@ -31,11 +31,11 @@
                                     <h3 th:text="${user.getUsername()}">null</h3>
                                 </div>
                                 <div class="col">
-                                    <a th:if="${#authentication.getName() eq username}" type="button" class="btn btn-dark">Edit profile</a>
+                                    <a th:if="${#authentication.getName() eq username}" th:href="@{/profile/{username}/edit(username=${#authentication.getName()})}" type="button" class="btn btn-dark">Edit profile</a>
                                     <th:block th:if="${#authentication.getName() ne username}">
                                         <div th:switch="${isSubscriber}">
-                                            <a th:case="${false}" th:href="@{/profile/subscribe(username=${user.getUsername()},page=${page})}" type="button" class="btn btn-dark">Subscribe</a>
-                                            <a th:case="${true}" th:href="@{/profile/unsubscribe(username=${user.getUsername()},page=${page})}" type="button" class="btn btn-dark">Unsubscribe</a>
+                                            <a th:case="${false}" th:href="@{/profile/{username}/subscribe(username=${user.getUsername()},page=${page})}" type="button" class="btn btn-dark">Subscribe</a>
+                                            <a th:case="${true}" th:href="@{/profile/{username}/unsubscribe(username=${user.getUsername()},page=${page})}" type="button" class="btn btn-dark">Unsubscribe</a>
                                         </div>
                                     </th:block>
                                 </div>
@@ -78,18 +78,18 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${page eq 0 ? 'disabled' : null}">
-                        <a class="page-link" th:href="@{/profile(username=${user.getUsername()},page=${(page+0)-1})}">Previous</a>
+                        <a class="page-link" th:href="@{/profile/{username}(username=${user.getUsername()},page=${(page+0)-1})}">Previous</a>
                     </li>
                     <th:block th:each="pg, count : ${countPages}">
                         <li class="page-item"
                             th:classappend="${page eq count.current ? 'active' : null}">
                             <a class="page-link"
-                               th:href="@{/profile(username=${user.getUsername()},page=${pg})}"
+                               th:href="@{/profile/{username}(username=${user.getUsername()},page=${pg})}"
                                th:text="${count.count}"></a>
                         </li>
                     </th:block>
                     <li class="page-item" th:classappend="${page eq countPages.size() - 1 ? 'disabled' : null}">
-                        <a class="page-link" th:href="@{/profile(username=${user.getUsername()},page=${page+1})}">Next</a>
+                        <a class="page-link" th:href="@{/profile/{username}(username=${user.getUsername()},page=${page+1})}">Next</a>
                     </li>
                 </ul>
             </nav>

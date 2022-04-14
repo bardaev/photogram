@@ -40,6 +40,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public void subscribe(User subscriber, User author) {
         Subscribers subscribers = new Subscribers();
         subscribers.setIdSubscriber(subscriber.getId());

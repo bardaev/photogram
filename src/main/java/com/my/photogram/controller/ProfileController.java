@@ -7,14 +7,16 @@ import com.my.photogram.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class ProfileController {
@@ -25,9 +27,9 @@ public class ProfileController {
     @Autowired
     private IPhotoService photoService;
 
-    @RequestMapping(path = "/profile", method = RequestMethod.GET)
+    @RequestMapping(path = "/profile/{username}", method = RequestMethod.GET)
     public ModelAndView profile(
-            @ModelAttribute("username") String username,
+            @PathVariable("username") String username,
             @ModelAttribute("page") int page,
             Principal principal) {
         User user = userService.findUser(username);
@@ -57,9 +59,51 @@ public class ProfileController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/profile/subscribe", method = RequestMethod.GET)
+    @RequestMapping(path = "/profile/{username}/edit", method = RequestMethod.GET)
+    public ModelAndView getEditProfile(@PathVariable("username") String username) {
+        User user = userService.findUser(username);
+        return new ModelAndView("sections/editProfile", "user", user);
+    }
+
+    @RequestMapping(path = "/profile/{username}/edit", method = RequestMethod.POST, consumes = "multipart/form-data")
+    public ModelAndView editProfile(
+            @PathVariable("username") String username,
+            @RequestParam("file") MultipartFile multipartFile,
+            User user,
+            Principal principal,
+            RedirectAttributes redirectAttributes) throws IOException {
+
+        String currentUser = principal.getName();
+        if (!currentUser.equals(username)) {
+            ModelAndView modelAndView = new ModelAndView("redirect:/profile/" + username + "/edit");
+            redirectAttributes.addFlashAttribute("err", "Not your profile");
+            return modelAndView;
+        }
+
+        if (!multipartFile.isEmpty() && !Objects.requireNonNull(multipartFile.getContentType()).startsWith("image")) {
+            ModelAndView modelAndView = new ModelAndView("redirect:/profile/" + username + "/edit");
+            redirectAttributes.addFlashAttribute("err", "Bad file");
+            return modelAndView;
+        }
+
+        if (user.getUsername() != null && (userService.findUser(user.getUsername()) == null || userService.findUser(user.getUsername()).getUsername().equals(user.getUsername()))) {
+            User updatedUser = userService.findUser(username);
+            updatedUser.setUsername(user.getUsername());
+            if (!multipartFile.isEmpty()) {
+                updatedUser.setAvatar(multipartFile.getBytes());
+            }
+            updatedUser.setDescription(user.getDescription());
+            userService.updateUser(updatedUser);
+
+            return profile(user.getUsername(), 0, principal);
+        }
+
+        return profile(username, 0, principal);
+    }
+
+    @RequestMapping(path = "/profile/{username}/subscribe", method = RequestMethod.GET)
     public ModelAndView subscribe(
-            @ModelAttribute("username") String username,
+            @PathVariable("username") String username,
             @ModelAttribute("page") int page,
             Principal principal
     ) {
@@ -69,9 +113,9 @@ public class ProfileController {
         return profile(username, page, principal);
     }
 
-    @RequestMapping(path = "/profile/unsubscribe", method = RequestMethod.GET)
+    @RequestMapping(path = "/profile/{username}/unsubscribe", method = RequestMethod.GET)
     public ModelAndView unsubscribe(
-            @ModelAttribute("username") String username,
+            @PathVariable("username") String username,
             @ModelAttribute("page") int page,
             Principal principal
     ) {
