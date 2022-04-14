@@ -4,10 +4,13 @@ import com.my.photogram.entity.User;
 import com.my.photogram.service.IUserService;
 import com.my.photogram.validation.UsernameExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,5 +51,15 @@ public class UserController {
             redirect.addFlashAttribute("userAlreadyExists", "User already exists!");
         }
         return new ModelAndView("redirect:/login");
+    }
+
+    @RequestMapping(
+            value = "/avatar/{username}",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public @ResponseBody
+    byte[] getAvatar(@PathVariable("username") String username) {
+        User user = userService.findUser(username);
+        return userService.findUser(username).getAvatar();
     }
 }

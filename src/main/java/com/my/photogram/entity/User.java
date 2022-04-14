@@ -1,22 +1,46 @@
 package com.my.photogram.entity;
 
 import com.my.photogram.validation.PasswordMatches;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Type;
+import org.springframework.util.ResourceUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Entity
 @Table(name = "users")
 @PasswordMatches
 public class User {
 
+    public User() {
+        try {
+            File file = ResourceUtils.getFile("classpath:static/user.png");
+            FileInputStream in = new FileInputStream(file);
+            byte[] buffer = new byte[in.available()];
+            in.read(buffer);
+            this.avatar = buffer;
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_user")
     private Long id;
+
+    @Lob
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] avatar;
 
     @NotEmpty(message = "Username is required")
     private String username;
@@ -41,6 +65,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     public String getUsername() {
@@ -87,11 +119,11 @@ public class User {
         return photos;
     }
 
-    public void addPhoto(Photo photo) {
-        addPhoto(photo, false);
+    public void setPhoto(Photo photo) {
+        setPhoto(photo, false);
     }
 
-    public void addPhoto(Photo photo, boolean otherSideHasBeenSet) {
+    public void setPhoto(Photo photo, boolean otherSideHasBeenSet) {
         this.getPhotos().add(photo);
         if (otherSideHasBeenSet) {
             return;

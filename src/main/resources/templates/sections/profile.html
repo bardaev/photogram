@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <div class="row mx-auto">
                         <div class="col-4">
-                            <img th:src="@{user.png}" class="rounded-circle" alt="Avatar" width="150" height="150">
+                            <img th:src="@{/avatar/{username}(username=${user.getUsername()})}" class="rounded-circle" alt="Avatar" width="150" height="150">
                         </div>
                         <div class="col-8">
                             <div class="row">

@@ -2,6 +2,7 @@ CREATE SEQUENCE hibernate_sequence;
 
 CREATE TABLE users (
     id_user INTEGER NOT NULL PRIMARY KEY,
+    avatar bytea,
     username VARCHAR(50) NOT NULL,
     password VARCHAR(500) NOT NULL,
     description TEXT,

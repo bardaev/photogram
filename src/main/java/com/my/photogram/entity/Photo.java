@@ -1,11 +1,11 @@
 package com.my.photogram.entity;
 
 import org.hibernate.annotations.Type;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 
 import javax.persistence.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Entity
@@ -82,6 +82,6 @@ public class Photo {
         if (otherSideHasBeenSet) {
             return;
         }
-        user.addPhoto(this, true);
+        user.setPhoto(this, true);
     }
 }
